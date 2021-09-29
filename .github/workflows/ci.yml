@@ -1,0 +1,58 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node-Express-pg CI
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  ci-job:
+    # containers operating systems
+    runs-on: ubuntu-20.04
+    # Docker Hub image Node
+    container: node:14.16.1
+
+    services:
+      # service container
+      postgres:
+        # Docker Hub image PostgreSQL
+        image: postgres:12.6
+        env:
+          POSTGRES_DB: gitpod
+          POSTGRES_PASSWORD: gitpod
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: gitpod
+        ports:
+          - 5432:5432
+        # set health checks
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+      - uses: actions/checkout@v2
+      
+      - run: npm ci
+      
+      - name: Query database
+        run: psql -h postgres -U gitpod -f ./envdb/database.sql
+          && psql -h postgres -U gitpod -d techdb -f ./envdb/table.sql
+          && psql -h postgres -U gitpod -d techdb -f ./envdb/initdata.sql
+        env:
+          PGPASSWORD: gitpod
+
+      - run: npm run build --if-present
+      
+      - run: npm test
+        env:
+          POSTGRES_HOST: postgres
