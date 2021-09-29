@@ -1,6 +1,6 @@
 ## Node.js, Express, PostgreSQL, JESTの組み合わせサンプル
 
-[![GitHub version](https://badge.fury.io/gh/gogo-pats%2Fnode-express-pg.svg)](https://badge.fury.io/gh/gogo-pats%2Fspring-thy-pg)
+[![GitHub version](https://badge.fury.io/gh/gogo-pats%2Fnode-express-pg.svg)](https://badge.fury.io/gh/gogo-pats%2Fnode-express-pg)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/gogo-pats/node-express-pg
 )
 [![Node.js](https://img.shields.io/badge/Node.js-006400.svg?longCache=true)](https://nodejs.org/ja/)
